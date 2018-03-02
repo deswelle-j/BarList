@@ -1,29 +1,39 @@
 <?php
-    $title = "Formulaire";
+    $title = "Formulaire d'ajout de produit dans un bar";
     require_once('header.php');
 
+    // Creation d'un fonction
     function listProduct(){
         $db = connexion();
-        $query = $db->prepare("SELECT id, nom FROM produit");
+        // Selectionne tous les champs de la table produit
+        $query = $db->prepare("SELECT * FROM produit");
         $query->execute();
+        // Recuperation du resultat de la requette dans le tableau produits
         $produits= $query->fetchAll();
+        // Retourne le tableau produit en fin de fonction
         return $produits;
     }
+
     $produits = listProduct();
     
 ?>    
     <main>
     <div>
         <form action="formulaire.php" method="post">
+        <!-- A faire : recuperer l'id du bar -->
             <!-- <label for="">Nom du bar :</label> -->
 
             <label for="">Nom du produit</label>
+
             <select id="monselect" name="style">
-            
+                <!-- Boucle qui affiche les produit dans le select -->
                 <?php foreach ($produits as $produit) : ?>
+                <!-- La valeur du select prend l'id du produit et l'affichage prend le nom -->
                 <option value="<?= $produit['id']?>"><?= $produit['nom']?></option> 
+                <!-- Fin boucle foreach -->
                 <?php endforeach ?>
             </select>
+
             <label for="">Prix du produit</label>
             <input type="text" name="prix">
             <input type="submit">
@@ -32,20 +42,17 @@
     
     </main>
 
-    <!-- SELECT * FROM barproduit 
-    JOIN produitON (id_produit = produit.id)
-    WHERE id_bar = :id -->
+
+
 
 
 <?php
     if(!empty($_POST)){
         $db = connexion();
-        $query = $db->prepare("INSERT INTO bar(name, adresse, rating, style) VALUES(:name, :adresse, :rating, :style)");
-        $query->bindValue(':name', $_POST['name'], PDO::PARAM_STR);
-        $query->bindValue(':adresse', $_POST['adresse'], PDO::PARAM_STR);
-        $query->bindValue(':rating', $_POST['rating'], PDO::PARAM_INT);
-        $query->bindValue(':style', $_POST['style'], PDO::PARAM_STR);
-        $query->execute();
+        <!-- Requette a faire pour inserer un produit a un bar -->
+        <!-- SELECT * FROM barproduit 
+        JOIN produitON (id_produit = produit.id)
+        WHERE id_bar = :id -->
 
         redirect('index.php');
     }
