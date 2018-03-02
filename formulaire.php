@@ -30,21 +30,16 @@
         $db = connexion();
         // Inserer dans la table bar au champ name,adresse,rating, style les parametres suivant
         $query = $db->prepare("INSERT INTO bar(name, adresse, rating, style) VALUES(:name, :adresse, :rating, :style)");
-        Insertion des valeurs retournées par le formulaire dans chacun des parametres
+        // Insertion des valeurs retournées par le formulaire dans chacun des parametres
         $query->bindValue(':name', $_POST['name'], PDO::PARAM_STR);
         $query->bindValue(':adresse', $_POST['adresse'], PDO::PARAM_STR);
         $query->bindValue(':rating', $_POST['rating'], PDO::PARAM_INT);
         $query->bindValue(':style', $_POST['style'], PDO::PARAM_STR);
-        Executer la requette
+        // Executer la requette
         $query->execute();
         // Rediriger vers la page d'acceuil
         redirect('index.php');
     }
-
-
-
-
-
 
     require_once('footer.php');
 ?>

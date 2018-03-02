@@ -31,7 +31,8 @@
                 <li>Style : <?= $bar['style'] ?></li>
                 <li>Note : <?= $bar['rating'] ?></li>
             </ul> 
-            <a href="addproduct.php?id=<?= $id_bar ?>">Ajouter un produit au <?= $bar['name'] ?></a>
+            <!-- Lien vers la page d'ajout de produit pour le bar avec l'id du bar et son nom dans l'URI -->
+            <a href="addproduct.php?id=<?= $id_bar ?>&amp;bar=<?= $bar['name']?>">Ajouter un produit au <?= $bar['name'] ?></a>
         </div>
     </main>
 
