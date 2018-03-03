@@ -46,6 +46,9 @@
             <input type="submit">
         </form>
     </div> 
+    <div>  
+        <a href="creationProduct.php?id=<?= $id_bar ?>">Ajouter un produit au formulaire</a>
+    </div>
     </main>
 
 

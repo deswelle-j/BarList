@@ -28,34 +28,33 @@
         $query->closeCursor();
     }
     // var_dump($bar);
-
-    var_dump($page_error);
+    // var_dump($page_error);
     $i = 0;
 ?>
     <!-- Affichage de la variable bar  -->
     <main role="main" class="container">
         <?php foreach ($bar as $produit) : ?>
+        <!-- Création d'un if pour ne pas afficher plusieurs fois les information sur le bar -->
         <?php if ($i == 0) : ?>
         <h1>Fiche du bar N°<?php echo $id_bar; ?></h1>
         <div>
-        
             <h2>Nom : <?php $produit['name']?></h2>   
             <ul>
                 <li>adresse : <?= $produit['adresse']?></li>
                 <li>Style : <?= $produit['style'] ?></li>
                 <li>Note : <?= $produit['rating'] ?></li>
             </ul> 
-            <a href="addproduct.php?id=<?= $id_bar ?>&amp;bar=<?= $produit['name']?>">Ajouter un produit au <?= $produit['name'] ?></a>
-            <h3>Liste des produit disponible dans le bar</h3>
             <!-- Lien vers la page d'ajout de produit pour le bar avec l'id du bar et son nom dans l'URI -->
+            <a href="addproduct.php?id=<?= $id_bar ?>&amp;bar=<?= $produit['name']?>">Ajouter un produit au <?= $produit['name'] ?></a>
+            <h3>Liste des produit disponible dans le bar</h3> 
             <ul>
             <?php endif ?>
-                <li>Nom produit : <?= $produit['nom'] ?></li>
-                <li>Prix : <?= $produit['prix'] ?></li>
+                <li><?php echo $produit['nom'] . " : " . $produit['prix'] . " euros"?></li>
             <?php $i++ ?>
             <?php endforeach ?>
             </ul>
         </div>
+        <a href="index.php">Retour à la liste des bars</a>
     </main>
 
 <?php
