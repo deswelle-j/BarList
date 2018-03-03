@@ -23,7 +23,7 @@
 ?>    
     <main>
     <div>
-        <form action="addproduct.php" method="post">
+        <form action="addproduct.php?id=<?= $id_bar ?>" method="post">
             <div>
                 <!-- affichage du nom du bar avec la variable bar -->
                 <label for="">Nom du bar : <?= $bar ?></label>
@@ -52,23 +52,21 @@
 <?php
     if(!empty($_POST)){
         var_dump($_POST);
-        // $db = connexion();
+        // Recuperation de l'id du produit en int
+        $produit = intval($_POST['produit']);
+        // Recuperation de l'id du bar
+        $id_bar = getInt('id');
 
-        // Erreur dans la requette A CORRIGER !!!!
-
-        // $query = $db->prepare("INSERT INTO barproduit(prix) VALUES(:prix)");
+        $db = connexion();
+        // Requete d'insertion dans la table barproduit 
+        $query = $db->prepare("INSERT INTO barproduit(id_bar,id_produit, prix) VALUES(:bar, :produit, :prix)");
         // Insertion des valeurs retournées par le formulaire dans chacun des parametres
-        // $query->bindValue(':id_bar', $id_bar, PDO::PARAM_INT);
-        // $query->bindValue(':id_produit', $_POST['produit'], PDO::PARAM_INT);
-        // $query->bindValue(':prix', $_POST['prix'], PDO::PARAM_INT);
+        $query->bindValue(':bar', $id_bar, PDO::PARAM_INT);
+        $query->bindValue(':produit', $produit, PDO::PARAM_INT);
+        $query->bindValue(':prix', $_POST['prix'], PDO::PARAM_INT);
         // Executer la requette
-        // $query->execute();
-        // Requette a faire pour inserer un produit a un bar 
-        // SELECT * FROM barproduit 
-        // JOIN produitON (id_produit = produit.id)
-        // WHERE id_bar = :id 
-
-        // redirect('index.php');
+        $query->execute();
+        redirect('bar.php?id='.$id_bar);
     }
     require_once('footer.php');
 ?>
