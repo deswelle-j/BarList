@@ -22,10 +22,12 @@
         $query->bindValue(":id", $id_bar, PDO::PARAM_INT);
         $query->execute();
         // si la variable bar = false inserer 'bar inconu' dans le tableau
-        if (!$bar = $query->fetchAll())
+        if (!$bar = $query->fetchAll()){
             $page_error[] = 'Bar inconnu';
+        }
+            
    
-        $query->closeCursor();
+       
     }
     // var_dump($bar);
     // var_dump($page_error);
@@ -52,6 +54,7 @@
                 <li><?php echo $produit['nom'] . " : " . $produit['prix'] . " euros"?></li>
             <?php $i++ ?>
             <?php endforeach ?>
+
             </ul>
         </div>
         <a href="index.php">Retour à la liste des bars</a>
