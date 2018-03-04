@@ -1,7 +1,23 @@
 
 <main role="main" class="container">
-    <h1>Bienvnue sur BarList</h1>
+    <h1>Bienvenue sur BarList</h1>
     <h2>qui vous propose la iste des bars de la région ainsi que leurs cartes</h2>
+    <div>
+        <form action="index.php" method="post">
+            <label for="filtre">Afficher par</label>
+            <select name="filter" id="filtre">
+                <option value="rating">note</option>
+                <option value="name">nom</option>
+            </select>
+            <label for="order">dans l'ordre</label>
+            <select name="order" id="order">
+                <option value="DESC">descendant</option>
+                <option value="ASC">ascendant</option>
+            </select>
+            <input type="submit">
+        </form>
+
+    </div>
     <!-- Boucle foreach pour afficher la liste des bars -->
     <?php foreach ($barList as $bar) : ?>
         <div>

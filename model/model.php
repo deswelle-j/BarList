@@ -8,18 +8,28 @@ function getNbBarFromDb(){
     return $nb['nb'];
 }
 
-
-function getBarList($offset){
+function getBarList($offset, $filter, $order){
         // Connexion à la base de donnée
         $db = connexion();
         // Préparation de la requette : Selectionne tous les champs de la table bar
-        $query = $db->prepare("SELECT * FROM bar LIMIT 3 OFFSET :offset");
+        $query = $db->prepare("SELECT * FROM bar ORDER BY $filter $order LIMIT 3 OFFSET :offset");
         $query->bindValue(':offset', $offset, PDO::PARAM_INT);
         // Execution de la requette
         $query->execute();
         // Recuperation de la requette dans la variable $barList
         $barList = $query->fetchAll();
         return $barList;
+}
+
+function getBar($id_bar){
+    $db = connexion();
+    // Requette : selection les champs de la table bar ou id = le parametre id
+    $query = $db->prepare("SELECT * FROM bar WHERE id = :id");
+    $query->bindValue(':id', $id_bar, PDO::PARAM_INT);
+    $query->execute();
+    $bar = $query->fetch();
+    $query->closeCursor();
+    return $bar;
 }
 
 function getPage(){
@@ -44,4 +54,16 @@ function paging($uri, $page, $maxPage){
     {
         echo '<a href="'.$uri.'?page=' . ($page + 1) .'">Suivant</a>';
     }
+}
+
+function getProductListFromBar($id_bar){
+    $db = connexion();
+    $query = $db->prepare("SELECT produit.nom, barproduit.prix FROM barproduit
+    JOIN produit ON produit.id = barproduit.id_produit 
+    WHERE barproduit.id_bar = :id"); 
+    // Le parametre id prend la variable $id_bar et est un entier
+    $query->bindValue(":id", $id_bar, PDO::PARAM_INT);
+    $query->execute();
+    $productList = $query->fetchAll();
+    return $productList;
 }

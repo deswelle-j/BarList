@@ -1,6 +1,7 @@
 <?php
     $title = "Fiche";
     require_once('header.php');
+    require_once('model/model.php');
     // Recuperation de l'id du bar depuis l'URI
     $id_bar = getInt('id');
    
@@ -8,58 +9,12 @@
 
     // récupération des infos du bar
     if ($id_bar != 0) {
-        $db = connexion();
-        // -- Ancienne requete --
-        // Requette : selection les champs de la table bar ou id = le parametre id
-        // $query = $db->prepare("SELECT bar.name, bar.adresse, bar.rating, bar.style FROM bar  WHERE id = :id");
+        $bar = getBar($id_bar);
 
-        // Requete select qui recupere le bar , la liste des produits et leurs prix
-        $query = $db->prepare("SELECT bar.name, bar.adresse, bar.rating, bar.style, produit.nom, barproduit.prix FROM bar 
-            JOIN barproduit ON bar.id = barproduit.id_bar 
-            JOIN produit ON produit.id = barproduit.id_produit 
-            WHERE bar.id = :id"); 
-        // Le parametre id prend la variable $id_bar et est un entier
-        $query->bindValue(":id", $id_bar, PDO::PARAM_INT);
-        $query->execute();
-        // si la variable bar = false inserer 'bar inconu' dans le tableau
-        if (!$bar = $query->fetchAll()){
-            $page_error[] = 'Bar inconnu';
-        }
-            
-   
-       
+        $productList = getProductListFromBar($id_bar);      
     }
+    require_once('view/barView.php');
     // var_dump($bar);
     // var_dump($page_error);
-    $i = 0;
-?>
-    <!-- Affichage de la variable bar  -->
-    <main role="main" class="container">
-        <?php foreach ($bar as $produit) : ?>
-        <!-- Création d'un if pour ne pas afficher plusieurs fois les information sur le bar -->
-        <?php if ($i == 0) : ?>
-        <h1>Fiche du bar N°<?php echo $id_bar; ?></h1>
-        <div>
-            <h2>Nom : <?php $produit['name']?></h2>   
-            <ul>
-                <li>adresse : <?= $produit['adresse']?></li>
-                <li>Style : <?= $produit['style'] ?></li>
-                <li>Note : <?= $produit['rating'] ?></li>
-            </ul> 
-            <!-- Lien vers la page d'ajout de produit pour le bar avec l'id du bar et son nom dans l'URI -->
-            <a href="addproduct.php?id=<?= $id_bar ?>&amp;bar=<?= $produit['name']?>">Ajouter un produit au <?= $produit['name'] ?></a>
-            <h3>Liste des produit disponible dans le bar</h3> 
-            <ul>
-            <?php endif ?>
-                <li><?php echo $produit['nom'] . " : " . $produit['prix'] . " euros"?></li>
-            <?php $i++ ?>
-            <?php endforeach ?>
-
-            </ul>
-        </div>
-        <a href="index.php">Retour à la liste des bars</a>
-    </main>
-
-<?php
     require_once('footer.php');
 ?>
