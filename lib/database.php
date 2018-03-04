@@ -27,11 +27,3 @@ function connexion() {
 
     return $db;
 }
-
-function getNbBarFromDb(){
-    $db = connexion();
-    $query= $db->query('SELECT COUNT(*) AS nb from bar');
-    $query->execute();
-    $nb = $query->fetch();
-    return $nb['nb'];
-}
