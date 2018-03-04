@@ -67,3 +67,35 @@ function getProductListFromBar($id_bar){
     $productList = $query->fetchAll();
     return $productList;
 }
+
+function listProduct(){
+    $db = connexion();
+    // Selectionne tous les champs de la table produit
+    $query = $db->prepare("SELECT * FROM produit");
+    $query->execute();
+    // Recuperation du resultat de la requette dans le tableau produits
+    $produits= $query->fetchAll();
+    // Retourne le tableau produit en fin de fonction
+    return $produits;
+}
+
+function addProductToBar($id_bar, $produit, $prix){
+    $db = connexion();
+    // Requete d'insertion dans la table barproduit 
+    $query = $db->prepare("INSERT INTO barproduit(id_bar,id_produit, prix) VALUES(:bar, :produit, :prix)");
+    // Insertion des valeurs retournées par le formulaire dans chacun des parametres
+    $query->bindValue(':bar', $id_bar, PDO::PARAM_INT);
+    $query->bindValue(':produit', $produit, PDO::PARAM_INT);
+    $query->bindValue(':prix', $prix, PDO::PARAM_INT);
+    // Executer la requette
+    $query->execute();
+}
+
+function createProduct($nom){
+    $db = connexion();
+    // Inserer dans la table produit au champ nom le parametre renvoyé par le formulaire
+    $query = $db->prepare("INSERT INTO produit(nom) VALUE(:nom)");
+    $query->bindValue(':nom', $nom, PDO::PARAM_STR);
+    // Executer la requette
+    $query->execute();
+}
